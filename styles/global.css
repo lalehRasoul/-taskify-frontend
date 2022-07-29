@@ -1,3 +1,5 @@
+@import "color.css";
+
 * {
   box-sizing: border-box;
   padding: 0;
@@ -6,12 +8,29 @@
 
 html,
 body {
-  font-family: "Roboto", -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: "Mulish", "Roboto", -apple-system, BlinkMacSystemFont, Segoe UI,
+    Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
+    sans-serif;
   background-color: #feffff;
 }
 
 a {
   color: inherit;
   text-decoration: none;
+}
+
+.ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected {
+  background: #356470;
+  color: white !important;
+  border-left: 3px solid #dde2ff !important;
+}
+
+.ant-layout-sider-trigger {
+  background: #02333e;
+  color: white !important;
+}
+
+.ant-menu-dark .ant-menu-inline.ant-menu-sub {
+  background: #02333e;
+  color: white !important;
 }

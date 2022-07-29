@@ -1,16 +1,16 @@
 import { createTheme } from "@mui/material";
 
-const taskifyTheme = {
+export const taskifyTheme = {
   gray: {
     lighter: "#C5C7CD",
     light: "#9FA2B4",
+    normal: "#DFE0EB",
     dark: "#626262",
     darker: "#252733",
   },
   green: {
     lighter: "#B7EBEC",
     light: "#6CBEBF",
-    normal: "#6CBEBF",
     darker: "#02333E",
   },
 };
@@ -31,14 +31,16 @@ export const theme = createTheme({
         dark: "#B02761",
       },
       taskifyGray: taskifyTheme.gray,
+      taskifyGreen: taskifyTheme.green,
     },
 
     border: {
       taskifyGray: taskifyTheme.gray,
+      taskifyGreen: taskifyTheme.green,
     },
   },
   typography: {
-    fontFamily: "Roboto",
+    fontFamily: "Mulish",
     fontWeightLight: 300,
     fontWeightRegular: 400,
     fontWeightMedium: 500,

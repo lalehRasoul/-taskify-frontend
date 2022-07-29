@@ -1,5 +1,6 @@
 import { ThemeProvider } from "@mui/material";
 import { theme } from "../styles/theme";
+import 'antd/dist/antd.css';
 import "../styles/global.css";
 
 function MyApp({ Component, pageProps }) {
