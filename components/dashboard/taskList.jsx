@@ -15,8 +15,8 @@ import Checkbox from "@mui/material/Checkbox";
 import { visuallyHidden } from "@mui/utils";
 import { taskifyTheme } from "../../styles/theme";
 import MoreOptions from "./moreOptions";
-
-
+import { apis } from "../../utils/apis";
+import { errorHandler } from "../../utils/tools";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -131,15 +131,13 @@ function EnhancedTableHead({ order, orderBy, onRequestSort }) {
 }
 
 EnhancedTableHead.propTypes = {
-  numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
   order: PropTypes.oneOf(["asc", "desc"]).isRequired,
   orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
 };
 
-export default function TaskList({ tableTitle, rows = [] }) {
+export default function TaskList({ tableTitle, rows = [], changeTaskList }) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
   const [page, setPage] = React.useState(0);
@@ -159,6 +157,15 @@ export default function TaskList({ tableTitle, rows = [] }) {
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
+  };
+
+  const handleOnCheckOrUncheck = async (taskId) => {
+    try {
+      const response = await apis.tasks.checkOrUncheckTask(taskId);
+      if (!!changeTaskList) changeTaskList(response.data);
+    } catch (error) {
+      errorHandler(error);
+    }
   };
 
   React.useEffect(() => {
@@ -215,6 +222,10 @@ export default function TaskList({ tableTitle, rows = [] }) {
                       <TableCell align="left">
                         <Checkbox
                           defaultChecked={row.checked}
+                          onClick={handleOnCheckOrUncheck.bind(
+                            {},
+                            row?.org?.id
+                          )}
                           sx={{
                             color: taskifyTheme.green.light,
                             "&.Mui-checked": {
@@ -224,7 +235,7 @@ export default function TaskList({ tableTitle, rows = [] }) {
                         />
                       </TableCell>
                       <TableCell align="right">
-                        <MoreOptions  data={row}/>
+                        <MoreOptions data={row} />
                       </TableCell>
                     </TableRow>
                   );

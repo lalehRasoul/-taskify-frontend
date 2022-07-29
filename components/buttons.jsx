@@ -7,6 +7,7 @@ export const TaskifyBtn = ({
   color = taskifyTheme.green.light,
   borderColor = color,
   sx = {},
+  ...props
 }) => {
   return (
     <Button
@@ -24,10 +25,10 @@ export const TaskifyBtn = ({
         "&:hover": {
           boxShadow: "0px 4px 12px rgba(55, 81, 255, 0.24)",
           backgroundColor: color,
-          //   boxShadow: `${alpha(taskifyTheme.green.light, 0.25)} 0 0 0 0.2rem`,
         },
         ...sx,
       }}
+      {...props}
     >
       {title}
     </Button>

@@ -1,56 +1,83 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box } from "@mui/system";
 import TaskList from "../../components/dashboard/taskList";
 import DashboardLayout from "../../containers/dashboard/layout";
+import { errorHandler } from "../../utils/tools";
+import { apis } from "../../utils/apis";
 
-function createData2(date, id, title, owner, note, checked = false) {
+function dataFormatter(org) {
   return {
-    id,
-    title,
-    owner,
-    date,
-    checked,
-    note,
+    id: org.id,
+    title: org.title,
+    owner: org.owner?.username,
+    date: org.created_at,
+    checked: org.checked,
+    note: org.note,
+    org,
   };
 }
-const note =
-  "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nesciunt dignissimos inventore nihil quisquam ipsum tenetur repudiandae repellendus accusantium laudantium, exercitationem similique aperiam consequuntur illo fuga dolores unde vero provident. Magni.";
-const rows = [
-  createData2(new Date().toISOString(), 3, "Lollipop", "Cupcake", note),
-  createData2(new Date().toISOString(), 1, "Lollipop", "Donut", note),
-  createData2(new Date().toISOString(), 2, "Marshmallow", "Eclair", note),
-  createData2(new Date().toISOString(), 4, "Nougat", "Frozen yoghurt", note),
-  createData2(new Date().toISOString(), 5, "Oreo", "Gingerbread", note),
-  createData2(new Date().toISOString(), 6, "Lollipop", "Honeycomb", note),
-  createData2(
-    new Date().toISOString(),
-    7,
-    "Marshmallow",
-    "Ice cream sandwich",
-    note
-  ),
-  createData2(new Date().toISOString(), 8, "Nougat", "Jelly Bean", note),
-  createData2(new Date().toISOString(), 9, "Oreo", "KitKat", note),
-  createData2(new Date().toISOString(), 10, "Lollipop", "Lollipop", note),
-  createData2(new Date().toISOString(), 11, "Marshmallow", "Marshmallow", note),
-  createData2(new Date().toISOString(), 12, "Nougat", "Nougat", note),
-  createData2(new Date().toISOString(), 31, "Oreo", "Oreo", note),
-];
 
 const Dashboard = () => {
+  const [inProgress, setInProgress] = useState([]);
+  const [completed, setCompleted] = useState([]);
+
+  const fetchAssignedTasks = async () => {
+    try {
+      const response = await apis.tasks.getAssignedTasks();
+      const data = [...response.data];
+      if (data instanceof Array) {
+        const doneTasks = data
+          .filter((el) => !!el.checked)
+          .map((el) => dataFormatter({ ...el }));
+        const insProgressTasks = data
+          .filter((el) => !el.checked)
+          .map((el) => dataFormatter({ ...el }));
+        setInProgress(insProgressTasks);
+        setCompleted(doneTasks);
+      } else {
+        throw new Error();
+      }
+    } catch (e) {
+      errorHandler(e);
+    }
+  };
+
+  const moveTaskToChecked = (task) => {
+    const newCompleted = [...completed];
+    const newInProgress = [...inProgress];
+    newCompleted.unshift(dataFormatter({ ...task }));
+    newInProgress = newInProgress.filter((el) => el?.id !== task?.id);
+    setCompleted(newCompleted);
+    setInProgress(newInProgress);
+  };
+
+  const moveTaskToUnchecked = (task) => {
+    const newCompleted = [...completed];
+    const newInProgress = [...inProgress];
+    newInProgress.unshift(dataFormatter({ ...task }));
+    newCompleted = newCompleted.filter((el) => el?.id !== task?.id);
+    setCompleted(newCompleted);
+    setInProgress(newInProgress);
+  };
+
+  useEffect(() => {
+    fetchAssignedTasks();
+  }, []);
+
   return (
     <DashboardLayout>
       <Box mt={3}>
-        <TaskList tableTitle={"All Tasks"} rows={rows} />
+        <TaskList
+          tableTitle={"All Tasks"}
+          rows={inProgress}
+          changeTaskList={moveTaskToChecked}
+        />
       </Box>
       <Box mt={3}>
         <TaskList
           tableTitle={"Completed"}
-          rows={rows.map((el) => {
-            const newEl = {...el}
-            newEl.checked = true;
-            return newEl;
-          })}
+          rows={completed}
+          changeTaskList={moveTaskToUnchecked}
         />
       </Box>
     </DashboardLayout>

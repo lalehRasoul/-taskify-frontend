@@ -99,36 +99,40 @@ export default function MoreOptions({ data }) {
         open={open}
         maxWidth={"md"}
       >
-        <BootstrapDialogTitle
-          id="customized-dialog-title"
-          onClose={handleClose}
-        >
-          <Box overflowX={"hidden"} pl={2} paddingRight={10}>
-            <Typography
-              variant="subtitle1"
-              fontWeight={700}
-              fontSize={"30px"}
-              height="100%"
-              textOverflow={"ellipsis"}
-              noWrap={true}
+        {!!data && (
+          <>
+            <BootstrapDialogTitle
+              id="customized-dialog-title"
+              onClose={handleClose}
             >
-              {data.title}
-            </Typography>
-          </Box>
-        </BootstrapDialogTitle>
-        <DialogContent dividers>
-          <Box px={2}>
-            <table>
-              <TableRow property={"Note:"} value={data.note} />
-              <TableRow property={"Owner:"} value={data.owner} />
-              <TableRow property={"Date:"} value={data.date} />
-              <TableRow
-                property={"Status:"}
-                value={!data.checked ? "In progress" : "Done"}
-              />
-            </table>
-          </Box>
-        </DialogContent>
+              <Box overflowX={"hidden"} pl={2} paddingRight={10}>
+                <Typography
+                  variant="subtitle1"
+                  fontWeight={700}
+                  fontSize={"30px"}
+                  height="100%"
+                  textOverflow={"ellipsis"}
+                  noWrap={true}
+                >
+                  {data.title}
+                </Typography>
+              </Box>
+            </BootstrapDialogTitle>
+            <DialogContent dividers>
+              <Box px={2}>
+                <table>
+                  <TableRow property={"Note:"} value={data.note} />
+                  <TableRow property={"Owner:"} value={data.owner} />
+                  <TableRow property={"Date:"} value={data.date} />
+                  <TableRow
+                    property={"Status:"}
+                    value={!data.checked ? "In progress" : "Done"}
+                  />
+                </table>
+              </Box>
+            </DialogContent>
+          </>
+        )}
         <DialogActions>
           <Box px={3} py={2}>
             <TaskifyBtn

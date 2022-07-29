@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { UserOutlined } from "@ant-design/icons";
 import { Box } from "@mui/system";
 import { Layout, Menu } from "antd";
@@ -8,6 +8,10 @@ import { Grid, Typography } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import TaskIcon from "@mui/icons-material/Task";
+import { User } from "../../utils/user";
+import { toast } from "react-toastify";
+import { apis } from "../../utils/apis";
+import { errorHandler } from "../../utils/tools";
 const { Content, Sider } = Layout;
 
 function getItem(label, key, icon, children) {
@@ -21,13 +25,61 @@ function getItem(label, key, icon, children) {
 
 const items = [
   getItem("Assigned to me", "1", <UserOutlined />),
-  getItem("List 1", "6", <TaskIcon />),
-  getItem("List 2", "8", <TaskIcon />),
+
   getItem("Create New List", "9", <AddBoxIcon />),
 ];
 
+const generateItems = (items) => {
+  return [
+    getItem("Assigned to me", "1", <UserOutlined />),
+    ...items,
+    getItem("Create New List", "9", <AddBoxIcon />),
+  ];
+};
+
 const DashboardLayout = ({ children }) => {
   const [collapsed, setCollapsed] = useState(false);
+  const [username, setUsername] = useState();
+  const [email, setEmail] = useState();
+  const [projects, setProjects] = useState([]);
+
+  const setUser = async () => {
+    const user = new User();
+    const userData = user.getUserData();
+    if (!userData || !userData.username || !userData.email) {
+      toast("Please login.", {
+        autoClose: 2000,
+        position: "bottom-left",
+        type: "error",
+      });
+      return setTimeout(() => {
+        router.push("/dashboard");
+      }, 2000);
+    }
+    setUsername(userData.username);
+    setEmail(userData.email);
+  };
+
+  const fetchAllTasks = async () => {
+    try {
+      const response = await apis.projects.getMyProjects();
+      setProjects(
+        generateItems(
+          (response.data || []).map((el, index) =>
+            getItem(el?.name, `item${index}`, <TaskIcon />)
+          )
+        )
+      );
+    } catch (error) {
+      errorHandler(error);
+    }
+  };
+
+  useEffect(() => {
+    setUser();
+    fetchAllTasks();
+  }, []);
+
   return (
     <Layout
       style={{
@@ -79,7 +131,7 @@ const DashboardLayout = ({ children }) => {
             style={{ backgroundColor: taskifyTheme.green.darker }}
             defaultSelectedKeys={["1"]}
             mode="inline"
-            items={items}
+            items={projects}
           />
         </Box>
       </Sider>
@@ -104,9 +156,10 @@ const DashboardLayout = ({ children }) => {
                   textOverflow={"ellipsis"}
                   overflow="hidden"
                   ml={1.5}
+                  textTransform="capitalize"
                   noWrap={true}
                 >
-                  Laleh Rasoul
+                  {username}
                 </Typography>
                 <Typography
                   fontWeight={700}
@@ -118,7 +171,7 @@ const DashboardLayout = ({ children }) => {
                   mt={-0.7}
                   fontSize={12}
                 >
-                  Laleh.rasoul80@gmail.com
+                  {email}
                 </Typography>
               </Grid>
             </Grid>
