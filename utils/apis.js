@@ -16,6 +16,25 @@ export const apis = {
     checkOrUncheckTask: (taskId) => {
       return requestApi.request({ url: `task/${taskId}`, method: "PATCH" });
     },
+    createTask: (projectId, data) => {
+      return requestApi.request({
+        url: `task/${projectId}`,
+        method: "POST",
+        data,
+      });
+    },
+    updateTask: (taskId, data) => {
+      return requestApi.request({ url: `task/${taskId}`, method: "PUT", data });
+    },
+    assignUser: (taskId, credential) => {
+      return requestApi.request({
+        url: `task/${taskId}/${credential}`,
+        method: "PATCH",
+      });
+    },
+    deleteTask: (id) => {
+      return requestApi.request({ url: `task/${id}`, method: "DELETE" });
+    },
   },
   projects: {
     getMyProjects: () => {

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { UserOutlined } from "@ant-design/icons";
 import { Box } from "@mui/system";
 import { Layout, Menu } from "antd";
 import Image from "next/image";
@@ -11,29 +10,30 @@ import TaskIcon from "@mui/icons-material/Task";
 import { User } from "../../utils/user";
 import { toast } from "react-toastify";
 import { apis } from "../../utils/apis";
+import PersonIcon from "@mui/icons-material/Person";
 import { errorHandler } from "../../utils/tools";
+import { useRouter } from "next/router";
 const { Content, Sider } = Layout;
 
-function getItem(label, key, icon, children) {
+function getItem(label, key, icon, tab) {
   return {
     key,
     icon,
-    children,
     label,
+    tab,
   };
 }
 
-const items = [
-  getItem("Assigned to me", "1", <UserOutlined />),
-
-  getItem("Create New List", "9", <AddBoxIcon />),
-];
-
 const generateItems = (items) => {
   return [
-    getItem("Assigned to me", "1", <UserOutlined />),
+    getItem("Assigned to me", "1", <PersonIcon fontSizes={"small"} />, null),
     ...items,
-    getItem("Create New List", "9", <AddBoxIcon />),
+    getItem(
+      "Create New Task",
+      "9",
+      <AddBoxIcon fontSize={"small"} />,
+      "newTask"
+    ),
   ];
 };
 
@@ -42,6 +42,8 @@ const DashboardLayout = ({ children }) => {
   const [username, setUsername] = useState();
   const [email, setEmail] = useState();
   const [projects, setProjects] = useState([]);
+  const [selected, setSelected] = useState("1");
+  const router = useRouter();
 
   const setUser = async () => {
     const user = new User();
@@ -60,16 +62,22 @@ const DashboardLayout = ({ children }) => {
     setEmail(userData.email);
   };
 
-  const fetchAllTasks = async () => {
+  const fetchMyProjects = async () => {
     try {
       const response = await apis.projects.getMyProjects();
-      setProjects(
-        generateItems(
-          (response.data || []).map((el, index) =>
-            getItem(el?.name, `item${index}`, <TaskIcon />)
+      const items = generateItems(
+        (response.data || []).map((el, index) =>
+          getItem(
+            el?.name,
+            `item${index}`,
+            <TaskIcon fontSize={"small"} />,
+            el?.name
           )
         )
       );
+      setProjects(items);
+      const target = items.find((el) => el.tab === router.query?.tab || null);
+      setSelected(target?.key || '1');
     } catch (error) {
       errorHandler(error);
     }
@@ -77,8 +85,13 @@ const DashboardLayout = ({ children }) => {
 
   useEffect(() => {
     setUser();
-    fetchAllTasks();
+    fetchMyProjects();
   }, []);
+
+  useEffect(() => {
+    const target = projects.find((el) => el.tab === router.query?.tab || null);
+    setSelected(target?.key || '1');
+  }, [router.query]);
 
   return (
     <Layout
@@ -87,7 +100,7 @@ const DashboardLayout = ({ children }) => {
       }}
     >
       <Sider
-        collapsible
+        // collapsible
         collapsed={collapsed}
         style={{ backgroundColor: taskifyTheme.green.darker }}
         onCollapse={(value) => setCollapsed(value)}
@@ -129,10 +142,39 @@ const DashboardLayout = ({ children }) => {
           <Menu
             theme="dark"
             style={{ backgroundColor: taskifyTheme.green.darker }}
-            defaultSelectedKeys={["1"]}
+            selectedKeys={[selected]}
             mode="inline"
-            items={projects}
-          />
+          >
+            {projects.map((el) => (
+              <Menu.Item
+                key={el.key}
+                onClick={() => {
+                  if (!!el.tab) router.push(`/dashboard?tab=${el.tab}`);
+                  else router.push(`/dashboard`);
+                }}
+              >
+                <Box
+                  display={"flex"}
+                  alignItems="center"
+                  width={"100%"}
+                  overflow="hidden"
+                  color={"#B7EBEC"}
+                  justifyContent="space-around"
+                >
+                  {el.icon}
+                  <Typography
+                    textOverflow={"ellipsis"}
+                    width={"100%"}
+                    overflow="hidden"
+                    fontSize={16}
+                    ml={1}
+                  >
+                    {el.label}
+                  </Typography>
+                </Box>
+              </Menu.Item>
+            ))}
+          </Menu>
         </Box>
       </Sider>
 

@@ -14,6 +14,7 @@ export const errorHandler = (e) => {
   } else if (typeof messages === "string") {
     toast(messages, toastOptions);
   } else {
+    console.log(e);
     toast("Something went wrong.", toastOptions);
   }
 };
