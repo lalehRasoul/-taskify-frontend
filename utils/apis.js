@@ -37,6 +37,22 @@ export const apis = {
     },
   },
   projects: {
+    createProject: (data) => {
+      return requestApi.request({ url: "project", method: "POST", data });
+    },
+    updateProject: (projectId, data) => {
+      return requestApi.request({
+        url: `project/${projectId}`,
+        method: "PUT",
+        data,
+      });
+    },
+    deleteProject: (projectId) => {
+      return requestApi.request({
+        url: `project/${projectId}`,
+        method: "DELETE",
+      });
+    },
     getMyProjects: () => {
       return requestApi.request({ url: "project", method: "GET" });
     },

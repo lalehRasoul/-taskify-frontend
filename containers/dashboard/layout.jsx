@@ -13,6 +13,7 @@ import { apis } from "../../utils/apis";
 import PersonIcon from "@mui/icons-material/Person";
 import { errorHandler } from "../../utils/tools";
 import { useRouter } from "next/router";
+import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 const { Content, Sider } = Layout;
 
 function getItem(label, key, icon, tab) {
@@ -33,6 +34,12 @@ const generateItems = (items) => {
       "9",
       <AddBoxIcon fontSize={"small"} />,
       "newTask"
+    ),
+    getItem(
+      "Project management",
+      "10",
+      <CreateNewFolderIcon fontSize={"small"} />,
+      "projectManagement"
     ),
   ];
 };
@@ -104,6 +111,7 @@ const DashboardLayout = ({ children }) => {
         collapsed={collapsed}
         style={{ backgroundColor: taskifyTheme.green.darker }}
         onCollapse={(value) => setCollapsed(value)}
+        width={230}
       >
         <Box position="sticky" top={0}>
           <Box py={3} px={1}>
@@ -166,7 +174,7 @@ const DashboardLayout = ({ children }) => {
                     textOverflow={"ellipsis"}
                     width={"100%"}
                     overflow="hidden"
-                    fontSize={16}
+                    fontSize={14}
                     ml={1}
                   >
                     {el.label}

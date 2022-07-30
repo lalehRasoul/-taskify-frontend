@@ -247,6 +247,7 @@ const MoreOptions = ({ data }) => {
           <table>
             <TableRowEditMode
               property={"Title:"}
+              placeholder="Task title"
               nativePropName="title"
               value={editFields.title}
               onChange={handleOnChangeEditFields}
@@ -279,6 +280,7 @@ const MoreOptions = ({ data }) => {
             />
             <TableRowEditMode
               property={"Assigned To:"}
+              placeholder="Username or Email Address"
               value={assignTo}
               onChange={handleOnChangeAssignTo}
             />

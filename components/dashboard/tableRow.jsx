@@ -8,7 +8,8 @@ export const TableRowEditMode = ({
   onChange = null,
   isTextArea = false,
   customInput = null,
-  inputSX = {}
+  placeholder = "",
+  inputSX = {},
 }) => {
   const handleOnChange = (e) => {
     if (!onChange) return null;
@@ -19,12 +20,18 @@ export const TableRowEditMode = ({
     if (!!customInput) return customInput;
     if (isTextArea) {
       return (
-        <TaskifyTextArea minRows={4} value={value} onChange={handleOnChange} />
+        <TaskifyTextArea
+          placeholder={placeholder}
+          minRows={4}
+          value={value}
+          onChange={handleOnChange}
+        />
       );
     }
     return (
       <TaskifyInput
         sx={inputSX}
+        placeholder={placeholder}
         value={value}
         onChange={handleOnChange}
       />

@@ -22,7 +22,6 @@ a {
 .ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected {
   background: #356470;
   color: white !important;
-  border-left: 3px solid #dde2ff !important;
 }
 
 .ant-layout-sider-trigger {

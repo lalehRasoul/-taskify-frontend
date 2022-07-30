@@ -78,6 +78,7 @@ const NewTask = () => {
         <table>
           <TableRowEditMode
             property={"Title:"}
+            placeholder="Task title"
             nativePropName="title"
             inputSX={{
               "& .MuiInputBase-input": {
@@ -147,6 +148,7 @@ const NewTask = () => {
           />
           <TableRowEditMode
             property={"Assigned‌To:"}
+            placeholder="Username or Email Address"
             value={assignTo}
             inputSX={{
               "& .MuiInputBase-input": {
