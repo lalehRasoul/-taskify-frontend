@@ -122,8 +122,8 @@ export default function CardForm() {
 
   return (
     <Card sx={{ width: "100%" }}>
-      <Grid container={true}>
-        <form onSubmit={handleOnSubmit}>
+      <form onSubmit={handleOnSubmit}>
+        <Grid container={true}>
           <Grid
             item={true}
             container={true}
@@ -381,8 +381,8 @@ export default function CardForm() {
               </span>
             </Typography>
           </Grid>
-        </form>
-      </Grid>
+        </Grid>
+      </form>
     </Card>
   );
 }
