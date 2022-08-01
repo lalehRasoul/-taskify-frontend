@@ -19,13 +19,13 @@ import { useRecoilState } from "recoil";
 import { projectState } from "../../store/atoms";
 const { Content, Sider } = Layout;
 
-function getItem(label, key, icon, tab, onclick) {
+function getItem(label, key, icon, tab, click) {
   return {
     key,
     icon,
     label,
     tab,
-    onclick,
+    click,
   };
 }
 
@@ -58,10 +58,12 @@ const DashboardLayout = ({ children }) => {
         "Logout",
         "11",
         <LogoutIcon fontSize={"small"} />,
-        null
-        // (onclick = () => {
-        //   console.log("ok");
-        // })
+        null,
+        () => {
+          const userInstance = new User()
+          userInstance.logout()
+          router.push("/")
+        }
       ),
     ];
   };
@@ -193,7 +195,7 @@ const DashboardLayout = ({ children }) => {
               <Menu.Item
                 key={el.key}
                 onClick={() => {
-                  if (!!el.onclick) return el.onclick();
+                  if (!!el.click) return el.click();
                   if (!!el.tab) router.push(`/dashboard?tab=${el.tab}`);
                   else router.push(`/dashboard`);
                 }}
