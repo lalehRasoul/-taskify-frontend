@@ -7,8 +7,11 @@ export const TableRowEditMode = ({
   nativePropName,
   onChange = null,
   isTextArea = false,
+  helper,
+  endAdornment = null,
   customInput = null,
   placeholder = "",
+  inputType = 'text',
   inputSX = {},
 }) => {
   const handleOnChange = (e) => {
@@ -31,6 +34,8 @@ export const TableRowEditMode = ({
     return (
       <TaskifyInput
         sx={inputSX}
+        type={inputType}
+        endAdornment={endAdornment}
         placeholder={placeholder}
         value={value}
         onChange={handleOnChange}
@@ -62,6 +67,7 @@ export const TableRowEditMode = ({
         }}
       >
         {render()}
+        {helper}
       </td>
     </tr>
   );

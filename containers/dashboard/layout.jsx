@@ -55,8 +55,14 @@ const DashboardLayout = ({ children }) => {
         "projectManagement"
       ),
       getItem(
-        "Logout",
+        "Profile",
         "11",
+        <PersonIcon fontSize={"small"} />,
+        "profile"
+      ),
+      getItem(
+        "Logout",
+        "12",
         <LogoutIcon fontSize={"small"} />,
         null,
         () => {

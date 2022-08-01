@@ -9,6 +9,14 @@ export const apis = {
       return requestApi.request({ url: "auth/signin", method: "POST", data });
     },
   },
+  user: {
+    updateProfile: (data) => {
+      return requestApi.request({ url: "user", method: "PUT", data });
+    },
+    deleteAccount: () => {
+      return requestApi.request({ url: "user", method: "DELETE" });
+    }
+  },
   tasks: {
     getAssignedTasks: () => {
       return requestApi.request({ url: "task/assigned", method: "GET" });

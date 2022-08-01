@@ -31,6 +31,7 @@ const Project = ({projectId}) => {
         const insProgressTasks = data
           .filter((el) => !el.checked)
           .map((el) => dataFormatter({ ...el }));
+          console.log(insProgressTasks);
         setInProgress(insProgressTasks);
         setCompleted(doneTasks);
       } else {
