@@ -18,12 +18,14 @@ import { apis } from "../../utils/apis";
 import { errorHandler } from "../../utils/tools";
 import { User } from "../../utils/user";
 import { toast } from "react-toastify";
+import { projectState } from "../../store/atoms";
+import { useRecoilState } from "recoil";
 
 const ProjectManagement = () => {
   const [users, setUsers] = useState([]);
   const [userInput, setUserInput] = useState("");
   const [myInfo, setMyInfo] = useState("");
-  const [projects, setProjects] = useState([]);
+  const [projects, setProjects] = useRecoilState(projectState);
   const [projectName, setProjectName] = useState("");
   const [selectedProjectId, setSelectedProjectId] = useState();
   const handleOnRemoveUser = (value) => {
@@ -68,14 +70,6 @@ const ProjectManagement = () => {
       }, 2000);
     }
     setMyInfo(userData);
-  };
-  const fetchMyProjects = async () => {
-    try {
-      const response = await apis.projects.getMyProjects();
-      setProjects(response.data);
-    } catch (error) {
-      errorHandler(error);
-    }
   };
   const handleSelect = (id) => {
     setSelectedProjectId(id);
@@ -130,7 +124,7 @@ const ProjectManagement = () => {
   const handleOnDelete = async () => {
     try {
       if (!!selectedProjectId) {
-        const response = await apis.projects.deleteProject(selectedProjectId, {
+        await apis.projects.deleteProject(selectedProjectId, {
           name: projectName,
           users,
         });
@@ -152,9 +146,6 @@ const ProjectManagement = () => {
   useEffect(() => {
     getMyInfo();
   }, []);
-  useEffect(() => {
-    if (!!myInfo) fetchMyProjects();
-  }, [myInfo]);
   return (
     <Box mx={6} my={8}>
       <Typography

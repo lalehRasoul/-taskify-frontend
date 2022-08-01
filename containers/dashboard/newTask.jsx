@@ -9,6 +9,8 @@ import { errorHandler } from "../../utils/tools";
 import { apis } from "../../utils/apis";
 import { TaskifyBtn } from "../../components/buttons";
 import { toast } from "react-toastify";
+import { useRecoilValue } from "recoil";
+import { projectSelectorState } from "../../store/selectors";
 
 const defaultValues = {
   title: "",
@@ -18,7 +20,7 @@ const defaultValues = {
 
 const NewTask = () => {
   const [assignTo, setAssignTo] = useState("");
-  const [projects, setProjects] = useState([]);
+  const projects = useRecoilValue(projectSelectorState)
   const [selectedProject, setSelectedProject] = useState();
   const [fields, setFields] = useState(defaultValues);
   const handleOnChangeEditFields = (e, prop) => {
@@ -35,17 +37,6 @@ const NewTask = () => {
   const handleOnChangeProject = (e) => {
     setSelectedProject(e.target.value);
   };
-  const fetchMyProjects = async () => {
-    try {
-      const response = await apis.projects.getMyProjects();
-      setProjects(response.data);
-      if (response.data instanceof Array && !!response.data[0]) {
-        setSelectedProject(response.data[0]?.id);
-      }
-    } catch (error) {
-      errorHandler(error);
-    }
-  };
   const handleOnSubmit = async () => {
     const body = { ...fields, assignUser: assignTo };
     try {
@@ -60,7 +51,13 @@ const NewTask = () => {
     }
   };
   useEffect(() => {
-    fetchMyProjects();
+    try {
+      if (projects instanceof Array && !!projects[0]) {
+        setSelectedProject(projects[0]?.id);
+      }
+    } catch (error) {
+      errorHandler(error);
+    }
   }, []);
   return (
     <Card sx={{ paddingX: 5, paddingY: 4, mx: 7, my: 9 }}>

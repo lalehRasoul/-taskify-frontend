@@ -13,44 +13,58 @@ import { apis } from "../../utils/apis";
 import PersonIcon from "@mui/icons-material/Person";
 import { errorHandler } from "../../utils/tools";
 import { useRouter } from "next/router";
-import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
+import CreateNewFolderIcon from "@mui/icons-material/CreateNewFolder";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { useRecoilState } from "recoil";
+import { projectState } from "../../store/atoms";
 const { Content, Sider } = Layout;
 
-function getItem(label, key, icon, tab) {
+function getItem(label, key, icon, tab, onclick) {
   return {
     key,
     icon,
     label,
     tab,
+    onclick,
   };
 }
-
-const generateItems = (items) => {
-  return [
-    getItem("Assigned to me", "1", <PersonIcon fontSizes={"small"} />, null),
-    ...items,
-    getItem(
-      "Create New Task",
-      "9",
-      <AddBoxIcon fontSize={"small"} />,
-      "newTask"
-    ),
-    getItem(
-      "Project management",
-      "10",
-      <CreateNewFolderIcon fontSize={"small"} />,
-      "projectManagement"
-    ),
-  ];
-};
 
 const DashboardLayout = ({ children }) => {
   const [collapsed, setCollapsed] = useState(false);
   const [username, setUsername] = useState();
   const [email, setEmail] = useState();
-  const [projects, setProjects] = useState([]);
+  const [projects, setProjects] = useRecoilState(projectState);
+  const [items, setItems] = useState([]);
   const [selected, setSelected] = useState("1");
   const router = useRouter();
+
+  const generateItems = (items) => {
+    return [
+      getItem("Assigned to me", "1", <PersonIcon fontSizes={"small"} />, null),
+      ...items,
+      getItem(
+        "Create New Task",
+        "9",
+        <AddBoxIcon fontSize={"small"} />,
+        "newTask"
+      ),
+      getItem(
+        "Project management",
+        "10",
+        <CreateNewFolderIcon fontSize={"small"} />,
+        "projectManagement"
+      ),
+      getItem(
+        "Logout",
+        "11",
+        <LogoutIcon fontSize={"small"} />,
+        null
+        // (onclick = () => {
+        //   console.log("ok");
+        // })
+      ),
+    ];
+  };
 
   const setUser = async () => {
     const user = new User();
@@ -72,7 +86,7 @@ const DashboardLayout = ({ children }) => {
   const fetchMyProjects = async () => {
     try {
       const response = await apis.projects.getMyProjects();
-      const items = generateItems(
+      const newItems = generateItems(
         (response.data || []).map((el, index) =>
           getItem(
             el?.name,
@@ -82,9 +96,10 @@ const DashboardLayout = ({ children }) => {
           )
         )
       );
-      setProjects(items);
-      const target = items.find((el) => el.tab === router.query?.tab || null);
-      setSelected(target?.key || '1');
+      setProjects(response.data);
+      setItems(newItems)
+      const target = newItems.find((el) => el.tab === router.query?.tab || null);
+      setSelected(target?.key || "1");
     } catch (error) {
       errorHandler(error);
     }
@@ -96,8 +111,22 @@ const DashboardLayout = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    const target = projects.find((el) => el.tab === router.query?.tab || null);
-    setSelected(target?.key || '1');
+    const newItems = generateItems(
+      (projects || []).map((el, index) =>
+        getItem(
+          el?.name,
+          `item${index}`,
+          <TaskIcon fontSize={"small"} />,
+          String(el?.id)
+        )
+      )
+    );
+    setItems(newItems)
+  }, [projects]);
+
+  useEffect(() => {
+    const target = items.find((el) => el.tab === router.query?.tab || null);
+    setSelected(target?.key || "1");
   }, [router.query]);
 
   return (
@@ -114,7 +143,14 @@ const DashboardLayout = ({ children }) => {
         width={230}
       >
         <Box position="sticky" top={0}>
-          <Box py={3} px={1}>
+          <Box
+            py={3}
+            px={1}
+            sx={{ cursor: "pointer" }}
+            onClick={() => {
+              router.push("/");
+            }}
+          >
             <Grid
               container
               flexWrap="nowrap"
@@ -153,10 +189,11 @@ const DashboardLayout = ({ children }) => {
             selectedKeys={[selected]}
             mode="inline"
           >
-            {projects.map((el) => (
+            {items.map((el) => (
               <Menu.Item
                 key={el.key}
                 onClick={() => {
+                  if (!!el.onclick) return el.onclick();
                   if (!!el.tab) router.push(`/dashboard?tab=${el.tab}`);
                   else router.push(`/dashboard`);
                 }}
