@@ -4,6 +4,7 @@ import Assigned from "../../containers/dashboard/assigned";
 import { useRouter } from "next/router";
 import NewTask from "../../containers/dashboard/newTask";
 import ProjectManagement from "../../containers/dashboard/projectManagement";
+import Project from "../../containers/dashboard/project";
 
 const Dashboard = () => {
   const { query } = useRouter();
@@ -14,6 +15,7 @@ const Dashboard = () => {
       case "projectManagement":
         return <ProjectManagement />;
       default:
+        if (!!query?.tab) return <Project projectId={query.tab} />;
         return <Assigned />;
     }
   }, [query]);

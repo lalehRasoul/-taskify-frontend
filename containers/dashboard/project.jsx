@@ -16,14 +16,14 @@ function dataFormatter(org) {
   };
 }
 
-const Assigned = () => {
+const Project = ({projectId}) => {
   const [inProgress, setInProgress] = useState([]);
   const [completed, setCompleted] = useState([]);
 
   const fetchAssignedTasks = async () => {
     try {
-      const response = await apis.tasks.getAssignedTasks();
-      const data = [...response.data];
+      const response = await apis.projects.getProjectById(projectId);
+      const data = [...(response.data?.tasks || [])];
       if (data instanceof Array) {
         const doneTasks = data
           .filter((el) => !!el.checked)
@@ -61,7 +61,7 @@ const Assigned = () => {
 
   useEffect(() => {
     fetchAssignedTasks();
-  }, []);
+  }, [projectId]);
 
   return (
     <>
@@ -83,4 +83,4 @@ const Assigned = () => {
   );
 };
 
-export default Assigned;
+export default Project;

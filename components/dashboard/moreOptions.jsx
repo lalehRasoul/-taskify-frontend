@@ -108,7 +108,7 @@ const MoreOptions = ({ data }) => {
     } catch (error) {
       errorHandler(error);
     }
-  }
+  };
   const handleOnSubmit = async () => {
     try {
       await apis.tasks.updateTask(data.id, editFields);
@@ -236,6 +236,12 @@ const MoreOptions = ({ data }) => {
           <table>
             <TableRow property={"Note:"} value={data.note} />
             <TableRow property={"Owner:"} value={data.owner} />
+            {!!data?.org?.project?.name && (
+              <TableRow
+                property={"Project:"}
+                value={data?.org?.project?.name}
+              />
+            )}
             <TableRow property={"Date:"} value={data.date} />
             <TableRow
               property={"Status:"}

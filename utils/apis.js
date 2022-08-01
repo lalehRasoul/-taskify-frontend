@@ -40,6 +40,9 @@ export const apis = {
     createProject: (data) => {
       return requestApi.request({ url: "project", method: "POST", data });
     },
+    getProjectById: (projectId) => {
+      return requestApi.request({ url: `project/${projectId}`, method: "GET" });
+    },
     updateProject: (projectId, data) => {
       return requestApi.request({
         url: `project/${projectId}`,

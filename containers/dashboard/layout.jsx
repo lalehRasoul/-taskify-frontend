@@ -78,7 +78,7 @@ const DashboardLayout = ({ children }) => {
             el?.name,
             `item${index}`,
             <TaskIcon fontSize={"small"} />,
-            el?.name
+            String(el?.id)
           )
         )
       );
