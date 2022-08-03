@@ -8,6 +8,16 @@ export const apis = {
     login: (data) => {
       return requestApi.request({ url: "auth/signin", method: "POST", data });
     },
+    recovery: (data) => {
+      return requestApi.request({ url: "auth/recovery", method: "POST", data });
+    },
+    submitNewRecoveryPassword: (rcode, data) => {
+      return requestApi.request({
+        url: `auth/recovery/${rcode}`,
+        method: "POST",
+        data,
+      });
+    },
   },
   user: {
     updateProfile: (data) => {
@@ -15,7 +25,7 @@ export const apis = {
     },
     deleteAccount: () => {
       return requestApi.request({ url: "user", method: "DELETE" });
-    }
+    },
   },
   tasks: {
     getAssignedTasks: () => {
