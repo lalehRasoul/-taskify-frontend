@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Box } from "@mui/system";
 import { Layout, Menu } from "antd";
-import Image from "next/image";
 import { taskifyTheme } from "../../styles/theme";
 import { Grid, Typography } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -54,23 +53,12 @@ const DashboardLayout = ({ children }) => {
         <CreateNewFolderIcon fontSize={"small"} />,
         "projectManagement"
       ),
-      getItem(
-        "Profile",
-        "11",
-        <PersonIcon fontSize={"small"} />,
-        "profile"
-      ),
-      getItem(
-        "Logout",
-        "12",
-        <LogoutIcon fontSize={"small"} />,
-        null,
-        () => {
-          const userInstance = new User()
-          userInstance.logout()
-          router.push("/")
-        }
-      ),
+      getItem("Profile", "11", <PersonIcon fontSize={"small"} />, "profile"),
+      getItem("Logout", "12", <LogoutIcon fontSize={"small"} />, null, () => {
+        const userInstance = new User();
+        userInstance.logout();
+        router.push("/");
+      }),
     ];
   };
 
@@ -105,8 +93,10 @@ const DashboardLayout = ({ children }) => {
         )
       );
       setProjects(response.data);
-      setItems(newItems)
-      const target = newItems.find((el) => el.tab === router.query?.tab || null);
+      setItems(newItems);
+      const target = newItems.find(
+        (el) => el.tab === router.query?.tab || null
+      );
       setSelected(target?.key || "1");
     } catch (error) {
       errorHandler(error);
@@ -129,7 +119,7 @@ const DashboardLayout = ({ children }) => {
         )
       )
     );
-    setItems(newItems)
+    setItems(newItems);
   }, [projects]);
 
   useEffect(() => {
@@ -167,9 +157,7 @@ const DashboardLayout = ({ children }) => {
               ml={collapsed ? 0 : 3}
             >
               <Grid item>
-                <Box position={"relative"} width={50} height={50}>
-                  <Image src={"/icon.svg"} layout={"fill"} alt="icon.svg" />
-                </Box>
+                <img width={50} height={50} src={"/icon.svg"} alt="icon.svg" />
               </Grid>
               <Grid
                 item

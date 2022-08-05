@@ -77,11 +77,6 @@ const NewTask = () => {
             property={"Title:"}
             placeholder="Task title"
             nativePropName="title"
-            inputSX={{
-              "& .MuiInputBase-input": {
-                height: "42px",
-              },
-            }}
             value={fields.title}
             onChange={handleOnChangeEditFields}
           />
@@ -100,11 +95,7 @@ const NewTask = () => {
                 value={fields.checked ? "done" : "inProgress"}
                 input={
                   <TaskifyInput
-                    sx={{
-                      "& .MuiInputBase-input": {
-                        height: "42px",
-                      },
-                    }}
+                    
                   />
                 }
                 onChange={(e) => handleOnChangeEditFields(e, "checked")}
@@ -126,11 +117,7 @@ const NewTask = () => {
                 value={String(selectedProject)}
                 input={
                   <TaskifyInput
-                    sx={{
-                      "& .MuiInputBase-input": {
-                        height: "42px",
-                      },
-                    }}
+                    
                   />
                 }
                 onChange={handleOnChangeProject}
@@ -147,11 +134,6 @@ const NewTask = () => {
             property={"Assigned‌To:"}
             placeholder="Username or Email Address"
             value={assignTo}
-            inputSX={{
-              "& .MuiInputBase-input": {
-                height: "42px",
-              },
-            }}
             onChange={handleOnChangeAssignTo}
           />
         </table>

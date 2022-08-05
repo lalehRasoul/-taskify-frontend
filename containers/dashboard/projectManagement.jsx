@@ -137,7 +137,7 @@ const ProjectManagement = () => {
         newProjects = newProjects.filter((el) => el.id !== selectedProjectId);
         console.log(newProjects);
         setProjects(newProjects);
-        handleClear()
+        handleClear();
       }
     } catch (error) {
       errorHandler(error);
@@ -217,11 +217,6 @@ const ProjectManagement = () => {
                     placeholder="Name of project"
                     value={projectName}
                     onChange={handleOnChangeProjectName}
-                    sx={{
-                      "& .MuiInputBase-input": {
-                        height: "42px",
-                      },
-                    }}
                   />
                 </Grid>
               </Grid>
@@ -254,11 +249,6 @@ const ProjectManagement = () => {
                         </IconButton>
                       </InputAdornment>
                     }
-                    sx={{
-                      "& .MuiInputBase-input": {
-                        height: "42px",
-                      },
-                    }}
                   />
                 </Grid>
               </Grid>

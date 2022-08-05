@@ -1,5 +1,4 @@
 import * as React from "react";
-import Image from "next/image";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
@@ -166,13 +165,7 @@ export default function CardForm() {
             >
               Forgot Password
             </Typography>
-            <Box position={"relative"} width={230} height={272}>
-              <Image
-                src={"/images/forgot.svg"}
-                layout={"fill"}
-                alt="icon.svg"
-              />
-            </Box>
+            <img width={230} height={272} src={"/images/forgot.svg"} alt="images/forgot.svg" />
           </Grid>
           <Grid
             item={true}

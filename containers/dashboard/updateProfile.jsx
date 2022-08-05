@@ -152,20 +152,7 @@ const UserProfile = () => {
                 <div></div>
               )
             }
-            inputSX={
-              !!error.username?.trim()
-                ? {
-                    borderColor: "red",
-                    "& .MuiInputBase-input": {
-                      height: "42px",
-                    },
-                  }
-                : {
-                    "& .MuiInputBase-input": {
-                      height: "42px",
-                    },
-                  }
-            }
+            inputSX={!!error.username?.trim() ? { borderColor: "red" } : {}}
             sx={!!error.username?.trim() ? { borderColor: "red" } : {}}
             value={fields.username}
             onChange={handleOnChangeEditFields}
@@ -193,20 +180,7 @@ const UserProfile = () => {
                 <div></div>
               )
             }
-            inputSX={
-              !!error.email?.trim()
-                ? {
-                    borderColor: "red",
-                    "& .MuiInputBase-input": {
-                      height: "42px",
-                    },
-                  }
-                : {
-                    "& .MuiInputBase-input": {
-                      height: "42px",
-                    },
-                  }
-            }
+            inputSX={!!error.email?.trim() ? { borderColor: "red" } : {}}
             value={fields.email}
             onChange={handleOnChangeEditFields}
           />
@@ -243,20 +217,7 @@ const UserProfile = () => {
                 <div></div>
               )
             }
-            inputSX={
-              !!error.password?.trim()
-                ? {
-                    borderColor: "red",
-                    "& .MuiInputBase-input": {
-                      height: "42px",
-                    },
-                  }
-                : {
-                    "& .MuiInputBase-input": {
-                      height: "42px",
-                    },
-                  }
-            }
+            inputSX={!!error.password?.trim() ? { borderColor: "red" } : {}}
             value={fields.password}
             onChange={handleOnChangeEditFields}
           />
@@ -294,18 +255,7 @@ const UserProfile = () => {
             }
             nativePropName="repeatPassword"
             inputSX={
-              !!error.repeatPassword?.trim()
-                ? {
-                    borderColor: "red",
-                    "& .MuiInputBase-input": {
-                      height: "42px",
-                    },
-                  }
-                : {
-                    "& .MuiInputBase-input": {
-                      height: "42px",
-                    },
-                  }
+              !!error.repeatPassword?.trim() ? { borderColor: "red" } : {}
             }
             value={fields.repeatPassword}
             onChange={handleOnChangeEditFields}

@@ -1,10 +1,8 @@
 import { Grid, IconButton, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import Image from "next/image";
 import Link from "next/link";
 import { TaskifyBtn } from "./buttons";
 import * as React from "react";
-import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -98,9 +96,7 @@ export default function Navbar() {
     >
       <Grid container flexWrap="nowrap" alignItems={"center"}>
         <Grid item>
-          <Box position={"relative"} width={50} height={50}>
-            <Image src={"/icon.svg"} layout={"fill"} alt="icon.svg" />
-          </Box>
+          <img src={"/icon.svg"} width={50} height={50} alt="icon.svg" />
         </Grid>
         <Grid item overflow={"hidden"}>
           <Typography

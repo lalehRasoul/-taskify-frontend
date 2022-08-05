@@ -1,5 +1,4 @@
 import * as React from "react";
-import Image from "next/image";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
@@ -115,9 +114,7 @@ export default function CardForm() {
             >
               <ArrowBackIosNewIcon color="action" fontSize="small" />
             </Box>
-            <Box position={"relative"} width={55} height={55}>
-              <Image src={"/icon.svg"} layout={"fill"} alt="icon.svg" />
-            </Box>
+            <img width={55} height={55} src={"/icon.svg"} alt="icon.svg" />
             <Typography
               variant="subtitle2"
               fontWeight={"bold"}
