@@ -1,7 +1,6 @@
 import { domain } from "./config";
 import axios from "axios";
 import { User } from "./user";
-import { toast } from "react-toastify";
 
 export class RequestError {
   message = "";
@@ -14,19 +13,6 @@ export class RequestError {
 }
 
 class Request {
-  controller = undefined;
-
-  constructor() {
-    this.controller = new AbortController();
-  }
-
-  abort() {
-    if (this.controller) {
-      this.controller.abort();
-    }
-    this.controller = new AbortController();
-  }
-
   async request({ method, url, data, domainLess = false }) {
     try {
       this.controller = new AbortController();
@@ -45,16 +31,9 @@ class Request {
       } else {
         configs.params = data;
       }
-      if (this.controller) configs.signal = this.controller.signal;
       return await axios(configs);
     } catch (e) {
-      if (axios.isCancel(e)) {
-        toast("Request canceled.", {
-          type: "error",
-          autoClose: 3000,
-          position: "bottom-left",
-        });
-      } else if (e?.response?.status === 401) {
+      if (e?.response?.status === 401) {
         window.location.href = "/login";
         throw new RequestError("Unauthorized. reconnect.", e);
       }
